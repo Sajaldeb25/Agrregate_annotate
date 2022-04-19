@@ -1,4 +1,4 @@
-from django.db.models import Max
+from django.db.models import Max, Avg, Count, Min
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -20,6 +20,9 @@ class PublisherView(APIView):
     def get(self, request):  # to see categories
         publisher = Publisher.objects.all()
         serializer = PublisherSerializer(publisher, many=True)
+        pub = Publisher.objects.annotate(num_b=Count('book'))
+        print(pub[2].num_b)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -32,6 +35,23 @@ class BookView(APIView):
 
         max_price = Book.objects.all().aggregate(Max('price'))
         print(max_price)
+
+        avg_price = Book.objects.all().aggregate(Avg('price'))
+        print(avg_price)
+
+        Book.objects.aggregate(price_diff=Max('price') - Avg('price'))
+        # print(price_diff)
+
+        bb = Book.objects.aggregate(Avg('price'), Max('price'), Min('price'))
+        print(bb)
+
+        q = Book.objects.annotate(b_cnt=Count('authors'))
+        print(q[0].b_cnt)
+        print(q[1].b_cnt)
+        print(q[2].b_cnt)
+        print(q[3].b_cnt)
+        # print(q[4].authors__count)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
