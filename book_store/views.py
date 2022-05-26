@@ -45,17 +45,28 @@ class BookView(APIView):
         bb = Book.objects.aggregate(Avg('price'), Max('price'), Min('price'))
         print(bb)
 
-        q = Book.objects.annotate(b_cnt=Count('authors'))
-        print(q[0].b_cnt)
-        print(q[1].b_cnt)
-        print(q[2].b_cnt)
-        print(q[3].b_cnt)
-        # print(q[4].authors__count)
+        q = Book.objects.annotate(b_cnt=Count('authors'), p_cnt=Count('publisher'))
+        print("Authors of : ", q[0], "is", q[0].b_cnt)  # nuber of authors for book 1
+        print("Authors of : ", q[1], "is", q[1].b_cnt)  # nuber of authors for book 2
+        print(q[2].b_cnt)  # nuber of authors for book 3
+        print(q[3].b_cnt)  # nuber of authors for book 4
 
-        book = Book.objects.order_by("name").select_related("publisher")
+        print(q[0].p_cnt)
 
-        # for bk in book:
-        #     print(bk.name, "by", bk.authors.name)
+        books = Book.objects.prefetch_related("publisher")
+        print(books)
+        for bk in books:
+            print(bk.name, "by", bk.authors)
+
+        j_book = Book.objects.filter(name__startswith="J")
+        print(j_book[0])  # prints Java Programming
+        condition_book = Book.objects.annotate(num_authors=Count('authors')).filter(num_authors__gt=1)
+        print(condition_book[0])
+        print(condition_book[0].num_authors)
+        # print(condition_book[1])
+        # print(condition_book[1].num_authors)
+        # print(condition_book[2])
+        # print(condition_book[2].num_authors)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
