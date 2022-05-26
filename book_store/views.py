@@ -68,6 +68,15 @@ class BookView(APIView):
         # print(condition_book[2])
         # print(condition_book[2].num_authors)
 
+        order_book = Book.objects.annotate(num_authors=Count('authors')).order_by('-num_authors')
+
+        for o_bk in order_book:
+            print(o_bk, o_bk.num_authors)  # decreasing order
+
+        order_by_price = Book.objects.order_by('-price')
+        for bk in order_by_price:
+            print(bk, bk.price)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
