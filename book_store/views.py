@@ -28,7 +28,7 @@ class PublisherView(APIView):
 
 class BookView(APIView):
     def get(self, request):
-        book = Book.objects.all()
+        book = Book.objects.order_by('name')
         serializer = BookSerializer(book, many=True)
         cnt = Book.objects.count()
         print(cnt)  # print number of object in book table
@@ -51,6 +51,11 @@ class BookView(APIView):
         print(q[2].b_cnt)
         print(q[3].b_cnt)
         # print(q[4].authors__count)
+
+        book = Book.objects.order_by("name").select_related("publisher")
+
+        # for bk in book:
+        #     print(bk.name, "by", bk.authors.name)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
