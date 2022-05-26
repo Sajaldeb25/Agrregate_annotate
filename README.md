@@ -1,0 +1,1 @@
+## Annotation and Agrregation is performed using Django ORM. 
