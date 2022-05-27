@@ -1,4 +1,4 @@
-from django.db.models import Max, Avg, Count, Min
+from django.db.models import Max, Avg, Count, Min, Subquery
 from django.db.models import Q
 
 from rest_framework.views import APIView
@@ -33,7 +33,12 @@ class AuthorView(APIView):
         for i in aaa:
             print(i, i.age)  # it can be found using .objects.all().values('name','age')
 
+        print("Subquery--->:")
+        bbb = Author.objects.filter(id__in=Subquery(auth_less.values('id')))
+        for auth in bbb:
+            print(auth, auth.age, auth.name)
 
+        
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
