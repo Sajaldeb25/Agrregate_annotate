@@ -15,6 +15,12 @@ class AuthorView(APIView):
     def get(self, request):  # to see categories
         author = Author.objects.all()
         serializer = AuthorSerializer(author, many=True)
+
+        print("auther and operation:")
+        auth_and = Author.objects.filter(Q(name__startswith='H') & Q(name__endswith='n'))
+        for ath in auth_and:
+            print(ath)       # found out authors according to and operation
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
