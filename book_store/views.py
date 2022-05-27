@@ -1,4 +1,6 @@
 from django.db.models import Max, Avg, Count, Min
+from django.db.models import Q
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -76,6 +78,19 @@ class BookView(APIView):
         order_by_price = Book.objects.order_by('-price')
         for bk in order_by_price:
             print(bk, bk.price)
+
+        # or operation using two queryset
+        print("Find_or")
+        find_jd = Book.objects.filter(name__startswith='J') | Book.objects.filter(name__startswith='D')
+        for bk in find_jd:
+            print(bk)
+
+        find_jd2 = Book.objects.filter(Q(name__startswith='J') | Q(name__startswith='D'))
+        for bk in find_jd2:
+            print(bk)
+
+
+
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
