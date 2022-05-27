@@ -25,6 +25,14 @@ class AuthorView(APIView):
         for aut in auth_not:
             print(aut)      # found out authors according to NOT operation
 
+        print("author Union operation:")
+        auth_less = Author.objects.filter(id__lt=4)
+        auth_big = Author.objects.filter(id__gte=2)
+        aaa = auth_less.union(auth_big)  # must assign in a variable 
+
+        for i in aaa:
+            print(i)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
