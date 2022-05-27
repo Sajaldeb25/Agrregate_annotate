@@ -16,10 +16,14 @@ class AuthorView(APIView):
         author = Author.objects.all()
         serializer = AuthorSerializer(author, many=True)
 
-        print("auther and operation:")
+        print("author and operation:")
         auth_and = Author.objects.filter(Q(name__startswith='H') & Q(name__endswith='n'))
         for ath in auth_and:
             print(ath)       # found out authors according to and operation
+        print("author NOT operation:")
+        auth_not = Author.objects.filter(~Q(id__gt=5) & ~Q(name__startswith='R'))
+        for aut in auth_not:
+            print(aut)      # found out authors according to NOT operation
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
