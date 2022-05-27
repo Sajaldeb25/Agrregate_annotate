@@ -31,7 +31,7 @@ class AuthorView(APIView):
         aaa = auth_less.union(auth_big)  # must assign in a variable
 
         for i in aaa:
-            print(i, i.age) 
+            print(i, i.age)  # it can be found using .objects.all().values('name','age')
 
 
 
