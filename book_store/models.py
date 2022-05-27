@@ -4,6 +4,7 @@ from django.db import models
 class Author(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
+    email = models.CharField(max_length=40, default='abc@gmail.com')
 
     def __str__(self):
         return self.name
