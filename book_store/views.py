@@ -34,11 +34,11 @@ class AuthorView(APIView):
             print(i, i.age)  # it can be found using .objects.all().values('name','age')
 
         print("Subquery--->:")
-        bbb = Author.objects.filter(id__in=Subquery(auth_less.values('id')))
+        bbb = Author.objects.filter(id__in=Subquery(auth_less.values('id')))[:1] # with limit 1
         for auth in bbb:
             print(auth, auth.age, auth.name)
 
-        
+
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
