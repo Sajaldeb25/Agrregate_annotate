@@ -47,8 +47,14 @@ class AuthorView(APIView):
         print("joining in django--->:")
         se_join = Book.objects.select_related().all()
 
-        for auth in se_join:  # find out all publisher name of each book 
-            print(auth.name, "published by : ", auth.publisher)
+        for auth in se_join:  # find out all publisher name of each book
+            print(auth.id, auth.name, "published by : ", auth.publisher)
+
+        print("joining with prefetch related:-->")
+
+        hb = Author.objects.prefetch_related('book_set').get(name__startswith="A")
+        for city in hb.book_set.all():
+            print(Book.name)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
