@@ -44,6 +44,11 @@ class AuthorView(APIView):
         for auth in p:
             print(auth, auth.age, auth.name)
 
+        print("joining in django--->:")
+        se_join = Book.objects.select_related().all()
+
+        for auth in se_join:  # find out all publisher name of each book 
+            print(auth.name, "published by : ", auth.publisher)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
