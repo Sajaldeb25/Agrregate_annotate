@@ -52,9 +52,9 @@ class AuthorView(APIView):
 
         print("joining with prefetch related:-->")
 
-        hb = Author.objects.prefetch_related('book_set').get(name__startswith="A")
-        for city in hb.book_set.all():
-            print(Book.name)
+        books = Book.objects.prefetch_related('authors')
+        for bk in books:
+            print(bk)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
