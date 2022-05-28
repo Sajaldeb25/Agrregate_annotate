@@ -1,5 +1,5 @@
 from django.db.models import Max, Avg, Count, Min, Subquery
-from django.db.models import Q
+from django.db.models import Q, F
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -34,10 +34,15 @@ class AuthorView(APIView):
             print(i, i.age)  # it can be found using .objects.all().values('name','age')
 
         print("Subquery--->:")
-        bbb = Author.objects.filter(id__in=Subquery(auth_less.values('id')))[:1] # with limit 1
+        bbb = Author.objects.filter(id__in=Subquery(auth_less.values('id')))[:2] # with limit 1
         for auth in bbb:
             print(auth, auth.age, auth.name)
 
+        print("filter by F function:")
+        p = Author.objects.filter(name="Sajal")
+        # print(p.name, p.age, p.email)
+        for auth in p:
+            print(auth, auth.age, auth.name)
 
 
         return Response(serializer.data, status=status.HTTP_200_OK)
