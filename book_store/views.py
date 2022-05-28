@@ -130,9 +130,11 @@ class BookView(APIView):
         for bk in find_jd2:
             print(bk)
 
-
-
-
+        print("find second highest:--->")
+        second_highest = Book.objects.order_by('-price')[2]
+        print(second_highest.name, second_highest.price, second_highest.pages)
+        # for iii in second_highest:
+        #     print(iii.price, iii.name)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
