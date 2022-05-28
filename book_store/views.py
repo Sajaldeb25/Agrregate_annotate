@@ -137,10 +137,11 @@ class BookView(APIView):
         #     print(iii.price, iii.name)
 
         print("find distinct price: -->")
-        dist = Book.objects.annotate(name_cnt=Count('price')).filter(name_cnt=1)
-        for pricee in dist:
-            print(pricee.price)
-        print(dist)
+        dist = Book.objects.annotate(Count('price')).order_by('price')
+        dist2 = Book.objects.order_by().values('price').distinct()
+        for pricee in dist2:
+            print(pricee)
+        print(dist2)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
