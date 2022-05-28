@@ -135,6 +135,13 @@ class BookView(APIView):
         print(second_highest.name, second_highest.price, second_highest.pages)
         # for iii in second_highest:
         #     print(iii.price, iii.name)
+
+        print("find distinct price: -->")
+        dist = Book.objects.annotate(name_cnt=Count('price')).filter(name_cnt=1)
+        for pricee in dist:
+            print(pricee.price)
+        print(dist)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
